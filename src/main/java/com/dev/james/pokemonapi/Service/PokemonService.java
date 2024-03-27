@@ -1,42 +1,20 @@
 package com.dev.james.pokemonapi.Service;
 
-import com.dev.james.pokemonapi.models.Pokemon;
-import com.dev.james.pokemonapi.repository.PokemonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.dev.james.pokemonapi.dto.PokemonDto;
+import com.dev.james.pokemonapi.dto.PokemonResponse;
 
-import java.util.List;
-import java.util.Optional;
+public interface PokemonService {
 
-@Service
-public class PokemonService {
+    PokemonDto createPokemon(PokemonDto pokemonDto);
 
-    @Autowired
-    private PokemonRepository pokemonRepository;
-
-    public List<Pokemon> getAllPokemons(){
-       return pokemonRepository.findAll();
-    }
-
-    public Optional<Pokemon> getPokemon(int id){
-        boolean exist = pokemonRepository.existsById(id);
-
-        if (exist){
-            return pokemonRepository.findById(id);
-        }
-        return Optional.empty();
-    }
+    PokemonResponse getAllPokemon();
 
 
-    public Pokemon createPokemon(Pokemon pokemon){
+    PokemonDto getPokemonById(int id);
 
-            return pokemonRepository.save(pokemon);
-
-    }
-
-    public void deleteAllPokemon(){
-        pokemonRepository.deleteAll();
-    }
+    PokemonDto updatePokemonById(PokemonDto pokemonDto,int id);
 
 
+
+    void deleteAllPokemon();
 }
