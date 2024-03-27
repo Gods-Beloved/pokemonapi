@@ -67,15 +67,16 @@ public class PokemonController {
         return new ResponseEntity<>(pokemonServiceImpl.updatePokemonById(pokemonDto,id),HttpStatus.OK);
 
     }
-//
-//    @DeleteMapping("/pokemon/{id}")
-//    public ResponseEntity<String> deletePokemon(
-//            @PathVariable("id")
-//            int id
-//    ){
-//        return new ResponseEntity<>("Deleted "+id ,HttpStatus.OK);
-//    }
-//
+
+    @DeleteMapping("/pokemon/{id}")
+    public ResponseEntity<String> deletePokemon(
+            @PathVariable("id")
+            int id
+    ){
+        pokemonServiceImpl.deletePokemonById(id);
+        return new ResponseEntity<>("Pokemon Deleted " ,HttpStatus.OK);
+    }
+
     @DeleteMapping("/pokemon")
     public ResponseEntity<String> deleteAllPokemons (){
 
