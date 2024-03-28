@@ -2,6 +2,7 @@ package com.dev.james.pokemonapi.controllers;
 
 import com.dev.james.pokemonapi.Service.PokemonService;
 import com.dev.james.pokemonapi.Service.PokemonServiceImpl;
+import com.dev.james.pokemonapi.dto.PagePokesRes;
 import com.dev.james.pokemonapi.dto.PokemonDto;
 import com.dev.james.pokemonapi.dto.PokemonResponse;
 import com.dev.james.pokemonapi.models.Pokemon;
@@ -38,7 +39,7 @@ public class PokemonController {
     }
 
     @GetMapping("/pokes")
-    public ResponseEntity<List<PokemonDto>> getPagePokemon(
+    public ResponseEntity<PagePokesRes> getPagePokemon(
             @RequestParam (value = "pageNo",defaultValue =" 0",required = false)
             int pageNo   ,
 

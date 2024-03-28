@@ -1,5 +1,6 @@
 package com.dev.james.pokemonapi.Service;
 
+import com.dev.james.pokemonapi.dto.PagePokesRes;
 import com.dev.james.pokemonapi.dto.PokemonDto;
 import com.dev.james.pokemonapi.dto.PokemonResponse;
 import com.dev.james.pokemonapi.exceptions.PokemonNotFoundException;
@@ -78,7 +79,7 @@ public class PokemonServiceImpl implements PokemonService{
     }
 
     @Override
-    public List<PokemonDto> getAllPokes(int paneNo, int pageSize) {
+    public PagePokesRes getAllPokes(int paneNo, int pageSize) {
 
         Pageable pageable = PageRequest.of(paneNo,pageSize);
 
@@ -86,10 +87,22 @@ public class PokemonServiceImpl implements PokemonService{
 
         List<Pokemon> pokemonList = pokemonPage.getContent();
 
-       return pokemonList.stream().map(
+     List<PokemonDto> listContents = pokemonList.stream().map(
                 pokemon -> mapToDto(pokemon)
 
         ).collect(Collectors.toList());
+
+        PagePokesRes paginationResponse = new PagePokesRes();
+
+        paginationResponse.setContent(listContents);
+        paginationResponse.setPageNo(pokemonPage.getNumber());
+        paginationResponse.setPageSize(pokemonPage.getSize());
+        paginationResponse.setTotalElements(pokemonPage.getTotalElements());
+        paginationResponse.setTotalPages(pokemonPage.getTotalPages());
+        paginationResponse.setLast(pokemonPage.isLast());
+
+        return paginationResponse;
+
 
     }
 

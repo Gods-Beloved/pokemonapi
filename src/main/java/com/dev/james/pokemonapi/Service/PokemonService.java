@@ -1,5 +1,6 @@
 package com.dev.james.pokemonapi.Service;
 
+import com.dev.james.pokemonapi.dto.PagePokesRes;
 import com.dev.james.pokemonapi.dto.PokemonDto;
 import com.dev.james.pokemonapi.dto.PokemonResponse;
 import com.dev.james.pokemonapi.models.Pokemon;
@@ -12,7 +13,7 @@ public interface PokemonService {
 
     PokemonResponse getAllPokemon();
 
-   List<PokemonDto> getAllPokes(int paneNo,int pageSize);
+   PagePokesRes getAllPokes(int paneNo, int pageSize);
 
 
     PokemonDto getPokemonById(int id);
