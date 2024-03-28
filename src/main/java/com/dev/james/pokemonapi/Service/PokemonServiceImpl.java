@@ -6,6 +6,9 @@ import com.dev.james.pokemonapi.exceptions.PokemonNotFoundException;
 import com.dev.james.pokemonapi.models.Pokemon;
 import com.dev.james.pokemonapi.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,8 +47,6 @@ public class PokemonServiceImpl implements PokemonService{
     @Override
     public PokemonResponse getAllPokemon() {
 
-        Pokemon pokemon8 = pokemonRepository.findById(33333).orElseThrow(() -> new PokemonNotFoundException("No pokemon found"));
-
 
         List<PokemonDto> pokemonList =  pokemonRepository.findAll().stream().map(
                 pokemon -> mapToDto(pokemon)
@@ -73,6 +74,22 @@ public class PokemonServiceImpl implements PokemonService{
       pokemonResponse.setStatus("Success");
 
       return pokemonResponse;
+
+    }
+
+    @Override
+    public List<PokemonDto> getAllPokes(int paneNo, int pageSize) {
+
+        Pageable pageable = PageRequest.of(paneNo,pageSize);
+
+        Page<Pokemon> pokemonPage = pokemonRepository.findAll(pageable);
+
+        List<Pokemon> pokemonList = pokemonPage.getContent();
+
+       return pokemonList.stream().map(
+                pokemon -> mapToDto(pokemon)
+
+        ).collect(Collectors.toList());
 
     }
 

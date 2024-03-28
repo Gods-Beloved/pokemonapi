@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //import java.util.Map;
 
 @RequestMapping("/api/v1")
@@ -27,9 +29,24 @@ public class PokemonController {
     }
 
     @GetMapping("/pokemon")
-    public ResponseEntity<PokemonResponse> getAllPokemon(){
+    public ResponseEntity<PokemonResponse> getAllPokemon(
 
-       return new ResponseEntity<>(pokemonServiceImpl.getAllPokemon(),HttpStatus.OK) ;
+    ){
+
+        return new ResponseEntity<>(pokemonServiceImpl.getAllPokemon(),HttpStatus.OK) ;
+
+    }
+
+    @GetMapping("/pokes")
+    public ResponseEntity<List<PokemonDto>> getPagePokemon(
+            @RequestParam (value = "pageNo",defaultValue =" 0",required = false)
+            int pageNo   ,
+
+            @RequestParam (value = "pageSize",defaultValue =" 0",required = false)
+            int pageSize
+    ){
+        return new ResponseEntity<>(pokemonServiceImpl.getAllPokes(pageNo,pageSize),HttpStatus.OK) ;
+
 
     }
 
@@ -61,7 +78,6 @@ public class PokemonController {
             int id,
            @RequestBody
             PokemonDto pokemonDto
-//            Map<String,String> body
     ){
 
         return new ResponseEntity<>(pokemonServiceImpl.updatePokemonById(pokemonDto,id),HttpStatus.OK);
@@ -82,7 +98,6 @@ public class PokemonController {
 
         pokemonServiceImpl.deleteAllPokemon();
 
-//        pokemonService.deleteAllPokemon();
 
         return new ResponseEntity<>("All Pokemon's Deleted",HttpStatus.OK);
 
