@@ -1,12 +1,9 @@
 package com.dev.james.pokemonapi.controllers;
 
-import com.dev.james.pokemonapi.Service.PokemonService;
 import com.dev.james.pokemonapi.Service.PokemonServiceImpl;
 import com.dev.james.pokemonapi.dto.PagePokesRes;
 import com.dev.james.pokemonapi.dto.PokemonDto;
 import com.dev.james.pokemonapi.dto.PokemonResponse;
-import com.dev.james.pokemonapi.models.Pokemon;
-import com.dev.james.pokemonapi.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
