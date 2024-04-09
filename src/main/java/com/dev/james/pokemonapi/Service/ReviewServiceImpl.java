@@ -85,6 +85,19 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
+    public void deleteReviewById(int pokemonId, int reviewId) {
+        Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
+
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review not found"));
+
+        if (review.getPokemon().getId() != pokemon.getId() ){
+            throw new ReviewNotFoundException("Review no associated with Pokemon");
+        }
+
+        reviewRepository.delete(review);
+    }
+
+    @Override
     public ReviewDto updateReviewById(int pokemonId, int reviewId, ReviewDto reviewDto) {
 
         Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
