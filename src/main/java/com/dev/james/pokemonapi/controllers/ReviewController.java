@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/")
 @RestController
 public class ReviewController {
 
@@ -22,7 +22,7 @@ public class ReviewController {
         this.reviewServiceImpl = reviewServiceImpl;
     }
 
-    @PostMapping("/review")
+    @PostMapping("review")
     public ResponseEntity<ReviewDto> storeReview(
             @RequestBody
             ReviewDto reviewDto
@@ -38,9 +38,43 @@ public class ReviewController {
             int id
 
     ){
-      return new ResponseEntity<List<ReviewDto>>(      reviewServiceImpl.getReviewByPokemonId(id),HttpStatus.OK
+      return new ResponseEntity<List<ReviewDto>>( reviewServiceImpl.getReviewByPokemonId(id),HttpStatus.OK
       );
     }
+
+    @GetMapping("pokemon/{pokemonId}/review/{id}")
+    public ResponseEntity<ReviewDto> getReviewByPokemonId(
+            @PathVariable(value = "pokemonId")
+            int pokemonId,
+            @PathVariable(value="id")
+            int reviewId
+    ){
+      ReviewDto reviewByPokeId = reviewServiceImpl.getReviewById(pokemonId,reviewId);
+
+      return new ResponseEntity<>(reviewByPokeId,HttpStatus.OK);
+    }
+
+
+    @PutMapping("pokemon/{pokemonId}/review/{id}")
+            public ResponseEntity<ReviewDto> updateReviewById(
+                    @PathVariable(value = "pokemonId")
+                    int pokemonId,
+                    @PathVariable(value = "id")
+                    int reviewId,
+                    @RequestBody
+                    ReviewDto reviewDto
+            ){
+
+      ReviewDto reviewData = reviewServiceImpl.updateReviewById(pokemonId, reviewId,reviewDto);
+
+      return new ResponseEntity<>(reviewData,HttpStatus.CREATED);
+
+
+
+    }
+
+
+
 
 
 

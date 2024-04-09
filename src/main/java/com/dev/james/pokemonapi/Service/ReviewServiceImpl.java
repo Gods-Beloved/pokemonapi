@@ -3,6 +3,7 @@ package com.dev.james.pokemonapi.Service;
 import com.dev.james.pokemonapi.dto.PokemonDto;
 import com.dev.james.pokemonapi.dto.ReviewDto;
 import com.dev.james.pokemonapi.exceptions.PokemonNotFoundException;
+import com.dev.james.pokemonapi.exceptions.ReviewNotFoundException;
 import com.dev.james.pokemonapi.models.Pokemon;
 import com.dev.james.pokemonapi.models.Review;
 import com.dev.james.pokemonapi.repository.PokemonRepository;
@@ -64,6 +65,46 @@ public class ReviewServiceImpl implements ReviewService{
        List<Review> reviews = reviewRepository.findByPokemonId(id);
 
        return reviews.stream().map( review -> mapToDto(review)).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public ReviewDto getReviewById(int reviewId, int pokemonId) {
+
+        Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
+
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review not found"));
+
+        if (review.getPokemon().getId() != pokemon.getId() ){
+            throw new ReviewNotFoundException("Review no associated with Pokemon");
+        }
+
+        return mapToDto(review);
+
+
+    }
+
+    @Override
+    public ReviewDto updateReviewById(int pokemonId, int reviewId, ReviewDto reviewDto) {
+
+        Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
+
+
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review not found"));
+
+        if (review.getPokemon().getId() != pokemon.getId() ){
+            throw new ReviewNotFoundException("Review no associated with Pokemon");
+        }
+
+        review.setTitle(reviewDto.getTitle());
+        review.setContent(reviewDto.getContent());
+        review.setStars(reviewDto.getStars());
+
+        Review updateReview = reviewRepository.save(review);
+
+        return mapToDto(updateReview);
+
+
 
     }
 
